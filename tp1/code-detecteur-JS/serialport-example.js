@@ -8,7 +8,7 @@ import { ReadlineParser, SerialPort } from 'serialport'
 
 // Create MQTT client
 const client = mqtt.connect('mqtt://192.168.78.96:3306') // create a client
-console.log(await SerialPort.list())
+console.log((async () => { console.log(await SerialPort.list()) })())
 // Create a port
 const port = new SerialPort({
     path: 'COM8',
