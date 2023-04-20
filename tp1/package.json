@@ -1,0 +1,17 @@
+{
+  "name": "tp1",
+  "version": "1.0.0",
+  "description": "Dans ce TP, vous allez mettre en place une grande partie du montage qui vous servira durant le projet. Cela consiste à construire les objets connectés que vous allez utiliser (microcontrôleurs, capteurs et actionneurs), et à développer le code qui servira à les piloter.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "johnny-five": "^2.1.0",
+    "mqtt": "^4.3.7",
+    "serialport": "^10.5.0"
+  }
+}
