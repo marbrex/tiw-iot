@@ -4,11 +4,11 @@
 
 import * as mqtt from "mqtt"  // import everything inside the mqtt module and give it the namespace "mqtt"
 
-import { SerialPort } from 'serialport'
+import { ReadlineParser, SerialPort } from 'serialport'
 
 // Create MQTT client
 const client = mqtt.connect('mqtt://192.168.78.96:3306') // create a client
-
+console.log(await SerialPort.list())
 // Create a port
 const port = new SerialPort({
     path: 'COM8',
@@ -38,4 +38,4 @@ port.on('data', function (data) {
 })
 
 // Pipe the data into another stream (like a parser or standard out)
-const lineStream = port.pipe(new Readline())
+const lineStream = port.pipe(new ReadlineParser())
