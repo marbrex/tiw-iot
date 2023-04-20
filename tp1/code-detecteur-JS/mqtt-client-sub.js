@@ -1,8 +1,28 @@
-// Source : https://github.com/mqttjs/MQTT.js
+import mqtt from 'mqtt'
+import five from 'johnny-five'
 
-import * as mqtt from "mqtt"  // import everything inside the mqtt module and give it the namespace "mqtt"
-let client = mqtt.connect('mqtt://192.168.78.96:3306') // create a client
-const topic = 'test/mytopic'
+const board = new five.Board()
+const client = mqtt.connect('mqtt://192.168.78.96:3306')
+
+const topic = 'iot/arduino'
+
+board.on('ready', function () {
+  const rfid = new five.RFID({
+    controller: 'PN532_I2C',
+    // Attention ici il faut bien vérifier que l'adresse du PN532 est la bonne
+    // Elle peut changer en fonction du module utilisé
+    address: 0x48
+  })
+
+  rfid.on('tag', function (id) {
+    console.log('ID:', id)
+    client.publish(topic, id)
+  })
+
+  rfid.on('error', function (err) {
+    console.error('Error:', err)
+  })
+})
 
 client.on('connect', function () {
   client.subscribe(topic, function (err) {
@@ -13,6 +33,5 @@ client.on('connect', function () {
 })
 
 client.on('message', function (topicR, message) {
-  // message is Buffer
   console.log(topicR + ': ', message.toString())
 })
