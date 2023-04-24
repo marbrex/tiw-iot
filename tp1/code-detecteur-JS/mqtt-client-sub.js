@@ -1,25 +1,31 @@
 import mqtt from 'mqtt'
 import five from 'johnny-five'
 
-//const board = new five.Board()
+var five = require("johnny-five");
+var board = new five.Board();
+
+
 const client = mqtt.connect('mqtt://192.168.78.96:3306')
 
 const topic = 'iot/arduino'
 
-//board.on('ready', function () {
-  //const rfid = new five.RFID({
-   //test
-  //})
+board.on("ready", function() {
+  var led = new five.Led(13);
+  led.blink(500);
 
-  //rfid.on('tag', function (id) {
-  //  console.log('ID:', id)
-  //  client.publish(topic, id)
-  //})
+  const rfid = new five.RFID({
+    //test
+  })
 
- // rfid.on('error', function (err) {
-  //  console.error('Error:', err)
- // })
-//})
+  rfid.on('tag', function (id) {
+    console.log('ID:', id)
+    client.publish(topic, id)
+  })
+
+ rfid.on('error', function (err) {
+    console.error('Error:', err)
+  })
+})
 
 client.on('connect', function () {
   client.subscribe(topic, function (err) {
