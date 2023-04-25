@@ -15,8 +15,8 @@ Techniquement, vous encapsulerez le code de vos objets (things) dans des _servie
 
 Récupérez et faites tourner les exemples de code fournis : 
 
-- un servient de [simulateur de capteur de température](./server.js) qui génère une valeur aléatoire entre 0 et 50 degrés, et envoie une alerte si cette température dépasse 45°. Ce servient publie sa TD 
-- un [consumer pour ce servient](client-simple.js) qui récupère cette TD et l'utilise. Ce client se lance à l'aide de la commande wot-servient (voir [doc ThingWeb](https://github.com/eclipse/thingweb.node-wot#using-nodejs))
+- un servient de [simulateur de capteur de température](./servient.js) qui génère une valeur aléatoire entre 0 et 50 degrés, et envoie une alerte si cette température dépasse 45°. Ce servient publie sa TD 
+- un [consumer pour ce servient](consumer.js) qui récupère cette TD et l'utilise. Ce client se lance à l'aide de la commande wot-servient (voir [doc ThingWeb](https://github.com/eclipse/thingweb.node-wot#using-nodejs))
 
 Sur le même modèle, intégrez le code du TP1 (détecteur de bagages) pour qu'il intègre un servient qui expose en HTTP le nombre de bagages détectés, et continue à envoyer (comme au TP1) les messages sur le broker avec les ID des bagages :
 
