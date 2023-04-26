@@ -2,13 +2,14 @@
 // Required steps to create a servient for a client
 const { Servient, Helpers } = require("@node-wot/core");
 const { HttpClientFactory } = require('@node-wot/binding-http');
+const MqttClientFactory = require("@node-wot/binding-mqtt").MqttClientFactory;
 
 const servient = new Servient();
 servient.addClientFactory(new HttpClientFactory(null));
+servient.addClientFactory(new MqttClientFactory(null));
 const WoTHelpers = new Helpers(servient);
 
 const tdAddress = "http://localhost:8080/temp-controller";
-
 WoTHelpers.fetch(tdAddress).then((td) => {
     console.log("Fetched:", tdAddress);
     try {
@@ -22,6 +23,8 @@ WoTHelpers.fetch(tdAddress).then((td) => {
                 consumedThing.subscribeEvent("overheat", async (message) => {
                     // enlever ".value()" pour avoir les métadonnées :
                     console.log("Overheat event:", await message.value());
+                }, console.error, {
+                    formIndex: 0
                 });
             } catch(error) {
                 console.log("Consumer error:", error);
