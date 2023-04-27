@@ -42,7 +42,6 @@ servient.start().then((WoT) => {
         exposedThing.setPropertyReadHandler("temperature", () => {
             return new Promise((resolve, reject) => { resolve(currentTemp); })
         });
-        exposedThing.set
 
         // expose the thing
         exposedThing.expose().then(() => {
