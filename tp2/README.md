@@ -44,7 +44,11 @@ Enfin, ajoutez une action qui consistera à "bloquer" l'aiguillage des bagages, 
 Par défaut, les communications orientées-messages sont réalisées en HTTP + long polling.
 &Agrave; l'aide de [cette doc](https://github.com/eclipse/thingweb.node-wot/blob/master/packages/binding-mqtt/README.md), modifiez le code pour que l'affichage des messages transite par votre broker MQTT.
 
+**Remarque** : lors de l'instanciation d'un consumer, il récupère la TD "complète" exposée par le servient. Si vous requêtez cette TD et regardez le tableau `forms` de la propriété `events.votre_event`, vous verrez qu'il expose de nombreuses URLs ou récupérer les events. Pour utiliser celle explicitement passée dans la TD initiale, il faut passer un objet `InteractionOptions` en (3èmè) paramètre de la méthode `subscribe` du consumer, avec une propriété `formIndex` correspondant à l'ordre de l'URL que vous voulez utiliser.
+
 ## 5. Thing Description Directory
 
 - Ajoutez à votre VM le container Docker de [TinyIoT Thing Directory](https://github.com/TinyIoT/thing-directory) (sur le port 8080 de votre VM).
-- "déplacez" vos TDs sur cette TDD, et faites en sorte que l'aiguillage aille la chercher là (et trouve la bonne)...
+- "déplacez" vos TDs sur cette TDD, et faites en sorte que l'aiguillage aille la chercher là (et trouve la bonne).
+
+**Aide** : la fonction `WoT.discover()` retourne une erreur "Not Implemented"... Il est donc conseillé d'interroger la TDD avec un client générique OpenAPI comme [openapi-client-axios](https://www.npmjs.com/package/openapi-client-axios), à partir de la description de son API [ici](https://raw.githubusercontent.com/tinyiot/thing-directory/master/apidoc/openapi-spec.yml).
