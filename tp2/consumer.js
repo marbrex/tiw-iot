@@ -24,7 +24,7 @@ WoTHelpers.fetch(tdAddress).then((td) => {
                     // enlever ".value()" pour avoir les métadonnées :
                     console.log("Overheat event:", await message.value());
                 }, console.error, {
-                    formIndex: 0
+                    formIndex: 7
                 });
             } catch(error) {
                 console.log("Consumer error:", error);
