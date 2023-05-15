@@ -49,6 +49,9 @@ Par défaut, les communications orientées-messages sont réalisées en HTTP + l
 ## 5. Thing Description Directory
 
 - Ajoutez à votre VM le container Docker de [TinyIoT Thing Directory](https://github.com/TinyIoT/thing-directory) (sur le port 8080 de votre VM).
+  - Rappel : lors de l'initialisation du broker MQTT NanoMQ, vous avez utilisé le port 8080 pour le contrôle / monitoring du broker. Cela pourra être fait en interne de la VM _via_ pa plateforme que vous installerez au [TP3](tp3). Vous allez donc lui réattribuer son port initial, le 8083.<br>Attention : ne modifiez pas le port utilisé pour l'envoi de messages en TCP car votre broker ne serait plus accessible depuis les autres machines !
+  - Arrêtez (et supprimez) le container Docker `nanomq`
+  - Relancez-le sur le port 8083 : `docker run -d -p 3306:1883 -p 8083:8083 --name nanomq  emqx/nanomq:0.17.0`
 - "déplacez" vos TDs sur cette TDD, et faites en sorte que l'aiguillage aille la chercher là (et trouve la bonne).
 
 **Aide** : la fonction `WoT.discover()` retourne une erreur "Not Implemented"... Il est donc conseillé d'interroger la TDD avec un client générique OpenAPI comme [openapi-client-axios](https://www.npmjs.com/package/openapi-client-axios), à partir de la description de son API [ici](https://raw.githubusercontent.com/tinyiot/thing-directory/master/apidoc/openapi-spec.yml).
