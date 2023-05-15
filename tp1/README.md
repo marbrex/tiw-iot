@@ -81,7 +81,7 @@ Vous utiliserez le protole [Firmata](https://github.com/firmata/protocol) pour c
 
 ### 2.4. Code JS
 
-De la même façon, vous utiliserez la bibliothèque standard [Johnny-Five](http://johnny-five.io/) qui est un client Firmata, et vous permet de contrôler les différents port d'E/S d el'arduino. Vous trouverez toutes les docs d'utilisation des capteurs et des actionneurs sur le site de cette bibliothèque.
+De la même façon, vous utiliserez la bibliothèque standard [Johnny-Five](http://johnny-five.io/) qui est un client Firmata, et vous permet de contrôler les différents port d'E/S de l'arduino. Vous trouverez toutes les docs d'utilisation des capteurs et des actionneurs sur le site de cette bibliothèque.
 
 Faites en sorte que :
 - le moteur s'oriente dans l'une des trois directions
