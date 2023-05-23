@@ -59,6 +59,10 @@ Commencez par créer un flot simple, puis complexifiez-le progressivement :
 
 Maintenant que nous avons fini de jouer, passons aux choses sérieuses. Dans le menu "hamburger" en haut à droite, cliquez sur "Manage Palette" puis installez la librairie `node-red-contrib-wot-discovery`. Vous devez voir 3 nouveaux noeuds apparaître en bas de la palette.
 
+**Remarque** : pour que Node-RED sous Docker dans votre VM puisse installer des composants, il faut configurer le proxy dans NPM, **à l'intérieur du conteneur Docker** (ouvrez un [shell dans le conteneur](https://phase2.github.io/devtools/common-tasks/ssh-into-a-container/#how-do-i-run-a-command-in-my-container)) :
+
+`npm config set proxy "http://proxy.univ-lyon1.fr:3128"`
+
 #### 1.3.1. Client capteur
 
 - &Agrave; l'aide des noeuds `inject` et `wot - fetch`, récupérez la TD de votre servient qui contient le capteur RFID.
