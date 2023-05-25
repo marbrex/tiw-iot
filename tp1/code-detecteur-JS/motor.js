@@ -1,56 +1,120 @@
+/**
+ * zoetrope.js
+ * Arduino Starter Kit example converted to johnny-five
+ * Project 10  - Zoetrope
+ *
+ * Arduino Starter Kit:
+ * http://www.arduino.cc/starterKit
+ *
+ * Examples:
+ * https://github.com/arduino/Arduino/tree/master/build/shared/examples/10.StarterKit
+ */
+
 import five from 'johnny-five'
+var board = new five.Board();
 
-const board = new five.Board()
+var motorSpeed = 0;
+var goForward = true;
+var isRunning = false;
 
-console.log("yoloooo")
+board.on('ready', function() {
+  var directionSwitch = new five.Button(4);
+  var onOffSwitch = new five.Button(5);
+  var motor = new five.Motor([9, 3, 2]);
+  var potPin = new five.Sensor({
+    pin: 'A0',
+    freq: 250
+  });
 
-//board.on('ready', function() {
+  // allow command line access
+  board.repl.inject({
+    onOffSwitch: onOffSwitch,
+    directionSwitch: directionSwitch,
+    potPin: potPin,
+    motor: motor
+  });
 
-//console.log("yoloooo")
-//  const motor = new five.Motor([9, 2, 3])
+  // Listen for onOffSwitch 'press' event
+  // toggle `isRunning` and start/stop motor
+  onOffSwitch.on('press', function() {
+    isRunning = !isRunning;
 
-//   const onOffButton = new Button(4)
-//   const inversionButton = new Button(5)
-//   const potentiometer = new Sensor({
-//     pin: 'A0',
-//     freq: 250
-//   })
+    if (isRunning) {
+      motorStart();
+    } else {
+      motorStop()
+    }
+  });
 
-//   let motorSpeed = 0
-//   let goForward = true
-//   let isRunning = false
+  // Listen for directionSwitch 'press' event
+  // toggle `goForward`
+  // set isRunning to true (as this will start the motor)
+  // call motorForward() or motorReverse()
+  directionSwitch.on('press', function() {
+    goForward = !goForward;
+    if (!isRunning) isRunning = true;
 
-//   // Gestion du bouton d'allumage/arrêt
-//   onOffButton.on('press', function() {
-//     if (isRunning) {
-//       motor.stop()
-//       isRunning = false
-//       console.log('Moteur arrêté.')
-//     } else {
-//       motor.start(motorSpeed)
-//       isRunning = true
-//       console.log('Moteur démarré.')
-//     }
-//   });
+    if (goForward) {
+      motorForward();
+    } else {
+      motorReverse();
+    }
+  });
 
-//   // Gestion du bouton d'inversion de rotation
-//   inversionButton.on('press', function() {
-//     goForward = !goForward
-//     if (goForward) {
-//       motor.forward(motorSpeed)
-//       console.log('Rotation : Avant')
-//     } else {
-//       motor.reverse(motorSpeed)
-//       console.log('Rotation : Arrière')
-//     }
-//   });
+  // Listen to 'data' event on the Potentiometer
+  // If the motor isn't running - get out
+  // As the motor is running, set `motorSpeed`
+  // Send the new speed through to a running motor
+  potPin.on('data', function() {
+    if (!isRunning) return;
+    motorSpeed = this.value / 4;
 
-//   // Gestion du potentiomètre pour régler la vitesse du moteur
-//   potentiometer.on('data', function() {
-//     motorSpeed = this.value >> 2; // Conversion de la valeur lue (0-1023) en une valeur de vitesse acceptable (0-255)
-//     if (isRunning) {
-//       motor.speed(motorSpeed)
-//       console.log('Vitesse : ' + motorSpeed)
-//     }
-//   })
- //})
+    if (goForward) {
+      motorForward(motorSpeed);
+    } else {
+      motorReverse(motorSpeed);
+    }
+  });
+
+  /**
+   * motorStart
+   * Start the motor
+   */
+
+  function motorStart() {
+    motor.start(motorSpeed);
+  }
+
+  /**
+   * motorForward
+   * Set the direction of the motor
+   * Use `speed` if passed in, or default `motorSpeed`
+   * @param  {Number} speed
+   */
+
+  function motorForward(speed) {
+    motorSpeed = speed || motorSpeed;
+    motor.forward(motorSpeed);
+  }
+
+  /**
+   * motorReverse
+   * Set the direction of the motor
+   * Use `speed` if passed in, or default `motorSpeed`
+   * @param  {Number} speed
+   */
+
+  function motorReverse(speed) {
+    motorSpeed = speed || motorSpeed;
+    motor.reverse(motorSpeed);
+  }
+
+  /**
+   * motorStop
+   * Stop the motor
+   */
+
+  function motorStop() {
+    motor.stop();
+  }
+});
