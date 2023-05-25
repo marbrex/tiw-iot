@@ -6,7 +6,7 @@ const client = mqtt.connect('mqtt://192.168.78.96:3306')
 
 const topic = 'iot/arduino'
 
-var lcd, servo, greenLight, redLight, ir
+var lcd, servo, greenLight, redLight
 
 board.on('ready', function () {
   // Déclaration de l'écran LCD
@@ -28,11 +28,11 @@ board.on('ready', function () {
   })
 
   // Déclaration du capteur infrarouge
-  ir = new five.Proximity({
-    controller: "HCSR04",
-    pin: 1,
-    freq: 200
-  });
+  //ir = new five.Proximity({
+  //  controller: "HCSR04",
+  //  pin: 1,
+  //  freq: 200
+  //});
 
   // Initialisation de la position du servo moteur
   servo.to(100)
@@ -73,10 +73,10 @@ client.on('message', function (topicR, message) {
       servo.to(600)
     }
 
-    ir.on("data", function() {
-      const distance = this.cm;
-      console.log(distance);
-    });
+   // ir.on("data", function() {
+   //   const distance = this.cm;
+   //   console.log(distance);
+   // });
 
     // Affiche la position du switch sur l'écran LCD
     lcd.clear().print(destination)
