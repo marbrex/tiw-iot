@@ -8,7 +8,7 @@ SerialPort.list().then((ports) => {
 
     // MQTT
     const client = mqtt.connect("mqtt://192.168.78.96:3306");
-    const topic = "iot/arduino";
+    const topic = "arduino1";
 
     client.on("connect", function () {
       client.publish(topic, data);
