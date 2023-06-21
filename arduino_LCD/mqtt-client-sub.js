@@ -4,7 +4,7 @@ import five from 'johnny-five'
 const board = new five.Board()
 const client = mqtt.connect('mqtt://192.168.78.96:3306')
 
-const topic = 'iot/arduino'
+const topic = 'arduino2'
 
 var lcd, servo, greenLight, redLight
 
@@ -18,7 +18,7 @@ board.on('ready', function () {
 
   // A verifier quels pins sont utilisées pour les leds
   greenLight = new five.Led(13)
-  redLight = new five.Led(0)
+  redLight = new five.Led(7)
 
   //Déclaration du moteur pas à pas
   servo = new five.Servo({
@@ -27,15 +27,10 @@ board.on('ready', function () {
     range: [0, 180]
   })
 
-  // Déclaration du capteur infrarouge
-  //ir = new five.Proximity({
-  //  controller: "HCSR04",
-  //  pin: 1,
-  //  freq: 200
-  //});
 
   // Initialisation de la position du servo moteur
   servo.to(100)
+  redLight.on()
 
 })
 
@@ -45,54 +40,55 @@ client.on('message', function (topicR, message) {
   const messageStr = message.toString()
   console.log(messageStr)
 
+  // Parsing de la chaîne JSON en objet JavaScript
+  const data = JSON.parse(messageStr);
+
+  // Récupération des valeurs d'aéroport et de tapis
+  const airport = data[0].AirportName;
+  const tapis = data[0].Tapis;
+
+  console.log("Aéroport :", airport);
+  console.log("Tapis :", tapis);
+
   // TODO : Réaliser la recherche de bagage via l'id récupérer pour
   // savoir où la bagage doit aller : RIGHT/LEFT/DISPUTE
   // En attendant, on va faire un aléatoire entre les 3 reponses
 
-  let orientation = Math.floor(Math.random() * 3)
-  console.log(orientation)
 
   var destination = ""
 
   // Détection d'un bagage
   if (messageStr != null) {
 
-    greenLight.on()
     redLight.off()
+    greenLight.on()
+    
 
     servo.to(0)
     // Oriente le servo moteur dans la bonne position
-    if (orientation == 0) { // RIGHT
-      destination = "Lyon"
+    if (tapis == 1) { // RIGHT
+      destination = airport
       servo.to(200)
-    } else if (orientation == 1) { // LEFT
-      destination = "Seoul"
+    } else if (tapis == 2) { // LEFT
+      destination = airport
       servo.to(400)
-    } else if (orientation == 2) { // DISPUTE
-      destination = "Rien"
+    } else if (tapis == 3) { // DISPUTE
+      destination = airport
       servo.to(600)
     }
 
-   // ir.on("data", function() {
-   //   const distance = this.cm;
-   //   console.log(distance);
-   // });
 
     // Affiche la position du switch sur l'écran LCD
     lcd.clear().print(destination)
 
     setTimeout(() => {
       
-      greenLight.off()
       redLight.on()
+      greenLight.off()
       servo.to(0)
 
     }, 2000);
   }
-    
-    // Afficher le message sur l'écran LCD  
-  //lcd.clear()
-  //lcd.cursor(0, 0).print(message.toString()) // Affiche sur la première ligne de l'écran LCD
 })
 
 client.on('connect', function () {
