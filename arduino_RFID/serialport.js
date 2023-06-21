@@ -10,8 +10,10 @@ SerialPort.list().then((ports) => {
     const client = mqtt.connect("mqtt://192.168.78.96:3306");
     const topic = "arduino1";
 
+    const decimalId = parseInt(data.toString(), 16)
+
     client.on("connect", function () {
-      client.publish(topic, data);
+      client.publish(topic, decimalId.toString());
       client.end();
     });
   });
@@ -20,13 +22,8 @@ SerialPort.list().then((ports) => {
     console.error("Error: ", err.message);
   });
 
-  // Read data that is available but keep the stream in "paused mode"
-  serialport.on('readable', function () {
-    console.log('Data1:', serialport.read())
-  })
-
   // Switches the port into "flowing mode"
   serialport.on('data', function (data) {
-    console.log('Data2:', data.toString())
+    console.log('ID:', data.toString())
   })
 });
