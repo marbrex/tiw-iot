@@ -28,7 +28,10 @@ client.on('message', function (topicR, message) {
   const messageStr = message.toString()
   console.log(messageStr)
 
-  if(messageStr != null){
+  if(messageStr == "stop"){
+    motor.stop()
+    console.log('Motor stopped')
+  } else if(messageStr != null ){
 
     // allow command line access
     board.repl.inject({
@@ -38,14 +41,8 @@ client.on('message', function (topicR, message) {
       motor: motor
     });
 
-    motor.start()
+    motor.start(215)
     console.log('Motor started')
-
-    setTimeout(() => {
-      motor.stop()
-      console.log('Motor stopped')
-    }, 5000);
-
     
     // Listen for onOffSwitch 'press' event
     // toggle `isRunning` and start/stop motor
@@ -84,10 +81,8 @@ client.on('message', function (topicR, message) {
 
       if (goForward) {
         motorForward(motorSpeed);
-        console.log('Motor speed:', motorSpeed);
       } else {
         motorReverse(motorSpeed);
-        console.log('Motor speed:', motorSpeed);
       }
     });
 
