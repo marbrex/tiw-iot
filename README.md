@@ -7,17 +7,17 @@
 
 ## Architecture
 
-![](iot-architecture.png)
+![](./assets/iot-architecture.png)
 
 ## Node-RED
 
-![](iot-node-red.png)
+![](./assets/iot-node-red.png)
 
 ## Base de données
 
 Nous utilisons une base de données SQLite. La structure de la BD ci-dessous.
 
-![](iot-db-diagram.png)
+![](./assets/iot-db-diagram.png)
 
 ## Commandes utiles
 
@@ -111,6 +111,15 @@ WHERE a.ID=(
     )
 );
 ```
+
+## InfraRouge sur aduino RFID
+
+Comme on vous l'a dit lors de la présentation, nous avions du mal à faire fonctionner le code pour l'infrarouge et le capteur RFID en même temps.
+Cependant, le code JavaScript pour le capteur infrarouge est présent dans le projet [ICI](./arduino_RFID/ledIR.js).
+Je vous met également le code chargé sur l'arduino : 
+
+Je vous mets, comme convenu, le lien vers une vidéo de test du code (j'ai enlevé le shield RFID pour la demo) : https://www.youtube.com/shorts/DIQOCmjskxQ
+
 
 
 ## Partie Ethique

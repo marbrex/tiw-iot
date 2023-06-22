@@ -1,8 +1,5 @@
 import { SerialPort } from "serialport";
 
-const ledPin = 7; // Pin pour la LED infrarouge
-const irSensorPin = "A5"; // Pin pour le capteur infrarouge
-
 // Configuration de la communication série
 SerialPort.list().then((ports) => {
   const port = new SerialPort({ path: '/dev/ttyACM0', baudRate: 115200 });
