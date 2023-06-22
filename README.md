@@ -1,3 +1,118 @@
+# TIW IoT 2022-2023
+
+- Eldar Kasmamytov
+- Ibrahim Ucar
+- Leatitia Castaldo
+- Jessim Nekka
+
+## Architecture
+
+![](iot-architecture.png)
+
+## Node-RED
+
+![](iot-node-red.png)
+
+## Base de données
+
+Nous utilisons une base de données SQLite. La structure de la BD ci-dessous.
+
+![](iot-db-diagram.png)
+
+## Commandes utiles
+
+### SQLite
+
+Launch SQLite prompt :  
+```bash
+sudo docker run --rm -it \
+  -v "/opt/sqlite:/workspace" \
+  -w /workspace \
+  keinos/sqlite3 \
+  sqlite3 /workspace/iot/iot.db
+```
+
+Create tables :  
+```sql
+DROP TABLE IF EXISTS Airport;
+CREATE TABLE Airport (
+    ID TEXT PRIMARY KEY,
+    Name TEXT
+);
+
+DROP TABLE IF EXISTS Vols;
+CREATE TABLE Vols (
+    ID INTEGER PRIMARY KEY,
+    OriginAirportID TEXT,
+    DestinAirportID TEXT,
+    FOREIGN KEY (OriginAirportID) REFERENCES Airport(ID),
+    FOREIGN KEY (DestinAirportID) REFERENCES Airport(ID),
+    CONSTRAINT CheckOriginNotEqualDestin CHECK (OriginAirportID <> DestinAirportID)
+);
+
+DROP TABLE IF EXISTS Bagages;
+CREATE TABLE Bagages (
+    ID INTEGER PRIMARY KEY,
+    FlightNumber INTEGER,
+    FOREIGN KEY (FlightNumber) REFERENCES Vols(ID)
+);
+
+DROP TABLE IF EXISTS Tapis;
+CREATE TABLE Tapis (
+    DestinAirportID TEXT PRIMARY KEY,
+    ID INTEGER,
+    FOREIGN KEY (DestinAirportID) REFERENCES Airport(ID),
+    CONSTRAINT CheckTapisId CHECK (ID BETWEEN 1 AND 3)
+);
+```
+
+Insert test data :  
+```sql
+INSERT INTO Airport (ID, Name)
+VALUES ('AP1', 'Airport 1'),
+       ('AP2', 'Airport 2');
+
+INSERT INTO Vols (ID, OriginAirportID, DestinAirportID)
+VALUES (1, 'AP1', 'AP2'),
+       (2, 'AP2', 'AP3'),
+       (3, 'AP3', 'AP1');
+
+INSERT INTO Bagages (ID, FlightNumber)
+VALUES (1, 1),
+       (2, 2),
+       (3, 3),
+       (243, 3);
+
+INSERT INTO Tapis (DestinAirportID, ID)
+VALUES ('AP1', 1),
+       ('AP2', 2),
+       ('AP3', 3);
+```
+
+### Node-RED
+
+Start node-red instance :  
+```bash
+sudo docker run -d -it \
+  -p 80:1880 \
+  -v node_red_data:/data \
+  -v /opt/sqlite:/sqlite \
+  --name mynodered \
+  nodered/node-red
+```
+
+Get Destination Airport name and Tapis ID :  
+```sql
+SELECT a.Name as AirportName, t.ID as Tapis
+FROM Airport a INNER JOIN Tapis t ON a.ID=t.DestinAirportID
+WHERE a.ID=(
+    SELECT DestinAirportID FROM Vols v WHERE v.ID=(
+        SELECT FlightNumber FROM Bagages WHERE ID=$bID
+    )
+);
+```
+
+
 ## Partie Ethique
 
 Ce rapport met en évidence les considérations éthiques à prendre en compte pour la mise en production effective de notre projet. Bien que ces considérations n'aient pas encore été intégrées à ce stade, nous reconnaissons leur importance capitale.
