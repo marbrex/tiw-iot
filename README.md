@@ -1,4 +1,5 @@
-##Partie Ethique
+## Partie Ethique
+
 Ce rapport met en évidence les considérations éthiques à prendre en compte pour la mise en production effective de notre projet. Bien que ces considérations n'aient pas encore été intégrées à ce stade, nous reconnaissons leur importance capitale.
 
 Tout d'abord, il est primordial de respecter l'autonomie humaine lors du développement et de l'implémentation de notre système. Nous devons établir des mécanismes clairs de vérification et de gouvernance pour permettre une supervision et une contestation des décisions prises par le système par une autorité humaine. En particulier, il est essentiel de permettre une intervention directe dans les situations critiques, telles qu'un manque d'informations sur l'origine ou la destination d'un bagage.
