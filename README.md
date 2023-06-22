@@ -116,7 +116,7 @@ WHERE a.ID=(
 
 Comme on vous l'a dit lors de la présentation, nous avions du mal à faire fonctionner le code pour l'infrarouge et le capteur RFID en même temps.
 Cependant, le code JavaScript pour le capteur infrarouge est présent dans le projet [ICI](./arduino_RFID/ledIR.js).
-Je vous met également le code chargé sur l'arduino : 
+Je vous met également le code chargé sur l'arduino [ICI](./arduino_RFID/ledIR.ino). 
 
 Je vous mets, comme convenu, le lien vers une vidéo de test du code (j'ai enlevé le shield RFID pour la demo) : https://www.youtube.com/shorts/DIQOCmjskxQ
 
