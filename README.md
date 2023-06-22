@@ -11,7 +11,15 @@
 
 ## Node-RED
 
+Nous avons **4 topics MQTT**.  
+
+Les 3 premiers **arduino1**, **arduino2**, **arduino3** correspondent à leurs descriptions sur la [diagramme](./assets/iot-architecture.png) d'architecture ci-dessus.  
+
 ![](./assets/iot-node-red.png)
+
+Le quatrième topic **arduino4** est utilisé pour pouvoir contrôler le moteur, notamment l'Arduino 2 envoie un message à l'Arduino 3 pour qu'elle arrête le tapis roulant.  
+
+![](./assets/iot-node-red-2.png)
 
 ## Base de données
 
@@ -119,8 +127,6 @@ Cependant, le code JavaScript pour le capteur infrarouge est présent dans le pr
 Je vous met également le code chargé sur l'arduino [ICI](./arduino_RFID/ledIR.ino). 
 
 Je vous mets, comme convenu, le lien vers une vidéo de test du code (j'ai enlevé le shield RFID pour la demo) : https://www.youtube.com/shorts/DIQOCmjskxQ
-
-
 
 ## Partie Ethique
 
